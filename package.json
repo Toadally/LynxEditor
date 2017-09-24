@@ -1,0 +1,19 @@
+{
+  "name": "lynxeditor",
+  "version": "1.0.0",
+  "description": "A realtime collaborative web-based text editor for the 21st century",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Toadally/LynxEditor.git"
+  },
+  "author": "Drew Gifford, Camron Shaw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Toadally/LynxEditor/issues"
+  },
+  "homepage": "https://github.com/Toadally/LynxEditor#readme"
+}
