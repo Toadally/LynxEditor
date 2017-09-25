@@ -1,0 +1,64 @@
+<head>
+<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+<style>
+
+    body {
+        background-color: #18babe;
+        color: white;
+        font-family: 'Inconsolata', monospace;
+        text-align: center;
+    }
+    h1 {
+        font-size: calc(10vw + 80px);
+        padding: 0;
+        margin: 0;
+    }
+    h5 {
+        font-size: calc(2vw + 10px);
+        padding: 0;
+        margin: 0;
+    }
+    p {
+        font-size: calc(1vw + 8px);
+        padding: 0;
+        margin: 1em;
+    }
+    .center {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -60%);
+    }
+    button {
+        background: transparent;
+        font-family: 'Inconsolata', monospace;
+        color: white;
+        border: 2px solid white;
+        padding: 10px;
+        border-radius: 4px;
+        transition: 100ms;
+    }
+    button:hover {
+        color: #18babe;
+        background: white;
+        cursor: pointer;
+    }
+    button:focus {
+        outline: 0;
+    }
+</style>
+<link rel='stylesheet' href='/public/css/load.css'>
+<div class='spin-back'></div><div class='spinner'></div>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="center">
+<h1>404</h1>
+<h5>Sorry, this doesn't exist</h5>
+<p>(And it probably won't exist either)</p>
+<button onclick="window.history.back()"><h5>Bring me back!</h5></button>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="/public/js/load.js"></script>
+</body>
