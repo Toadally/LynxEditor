@@ -181,7 +181,6 @@
 
 <script src="/public/js/load.js"></script>
 <script>
-    updateEvents();
     var editors = 0;
     var editorTable = [];
     var idTable = [];
@@ -237,7 +236,7 @@
       edit.getSession().setMode("ace/mode/"+mode);
       edit.setTheme("ace/theme/"+theme2);
       if(editors > 0){$("#top-selector").children().removeClass("activeTab");}
-      if(editors > 0){$("#top-selector").append("<div class='activeTab tab' id='"+filename+"'><span>"+filename+"</span><i class='fa fa-times'></i></div>");}
+      if(editors > 0){$("#top-selector").append("<div class='activeTab tab' id='file:"+filename+"'><span>"+filename+"</span><i class='fa fa-times'></i></div>");}
       var n = $("#top-selector div").length;
       var w = (100/n);
       $("#top-selector div").width(w+'%');
@@ -245,7 +244,15 @@
       editorTable.push(edit);
       idTable.push(id);
       editors++;
-      updateEvents();
+
+    }
+
+    function removeEditor(id){
+      var x = idTable.indexOf(id);
+      if(x > -1){
+        idTable.remove(idTable[x]);
+        editorTable.remove(editorTable[x]);
+      }
     }
 
     function setTheme(themeName){
@@ -271,26 +278,26 @@
       }
     }
 
-    function updateEvents(){
-      $(".filelist .tab").click(function(){
+      $(".filelist .tab").on("click", function(){
 
-        var file = $(this).attr("id");
+        var file = $(this).attr("id").replace("file:","");
         createEditor(file, file);
+        console.log("Hello World");
 
       });
-      $("#top-selector div").hover(function(){
+      $("#top-selector div").on("hover", function(){
 
         $(this).find("i").fadeIn(125);
 
 
 
-      }, function(){
+      },function(){
 
         $(this).find("i").fadeOut(125);
 
       });
 
-      $(".tab").hover(function(){
+      $(".tab").on("hover",function(){
         if(!$(this).hasClass("activeTab")){
           $(this).css("background",getLightOrDark($("."+theme).css("background-color"), 0.025));
         }
@@ -302,7 +309,7 @@
 
       });
 
-      $(".tab").click(function(){
+      $(".tab").on("click", function(){
 
         $(this).siblings().find("span").removeClass('active');
 
@@ -316,18 +323,16 @@
 
       });
 
-      $("#top-selector i").click(function(){
+      $("#top-selector i").on("click",function(){
         $(this).parent().css("transition","none");
         $(this).parent().css("position","relative");
         $(this).parent().animate({
           "left":"-100%"
         }, 75, function(){$(this).remove()});
-
+        removeEditor($(this).attr("id").replace("file:",""));
 
       });
-    }
     function getLightOrDark(color, intensity){
-
       if(color == "transparent" || color == "null"){
         return "rgba(255,255,255,"+intensity+")";
       }
@@ -347,8 +352,6 @@
       } else {
         return "rgba(0,0,0,"+intensity+")";
       }
-
-
     }
 
     /*editor.getSession().on("change", function(e){
