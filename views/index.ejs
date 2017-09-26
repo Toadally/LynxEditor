@@ -58,7 +58,6 @@
       top: 75%;
       left: 50%;
       transform: translate(-50%, -50%);
-      transition: 125ms;
     }
     #top-selector i {
       position: relative;
@@ -71,7 +70,7 @@
 
     }
     .tab {
-      transition: 125ms;
+      transition: background 125ms;
     }
     .tab:hover {
       cursor: pointer;
@@ -212,7 +211,7 @@
     }
     createEditor("PLACEHOLDER","DOESNTEXIST");
     function createEditor(id, filename){
-      $("#editor-placeholder").children().removeClass("active");
+      $("#editor-placeholder").children().removeClass("activeEditor");
       if(editors >0){
         $("#editor-placeholder").append("<div class='editor activeEditor' id='"+id+ "' </div>");
       } else {
@@ -236,7 +235,12 @@
       edit.getSession().setMode("ace/mode/"+mode);
       edit.setTheme("ace/theme/"+theme2);
       if(editors > 0){$("#top-selector").children().removeClass("activeTab");}
-      if(editors > 0){$("#top-selector").append("<div class='activeTab tab' id='file:"+filename+"'><span>"+filename+"</span><i class='fa fa-times'></i></div>");}
+      if(editors > 0){$("#top-selector").append("<div class='activeTab tab' file-id='"+filename+"' id='"+filename+"'><span class='active'>"+filename+"</span><i class='fa fa-times'></i></div>");
+
+    }
+
+      $(".tab").css("background","transparent");
+      $(".activeTab").css("background",getLightOrDark($("."+theme).css("background-color"), 0.1));
       var n = $("#top-selector div").length;
       var w = (100/n);
       $("#top-selector div").width(w+'%');
@@ -249,10 +253,18 @@
 
     function removeEditor(id){
       var x = idTable.indexOf(id);
+
+      console.log(id);
+      document.getElementById(id).remove();
+
       if(x > -1){
-        idTable.remove(idTable[x]);
-        editorTable.remove(editorTable[x]);
+        idTable.splice(x, 1);
+        editorTable.splice(x, 1);
       }
+
+      var n = $("#top-selector div").length-1;
+      var w = (100/n);
+      $("#top-selector div").width(w+'%');
     }
 
     function setTheme(themeName){
@@ -278,30 +290,33 @@
       }
     }
 
-      $(".filelist .tab").on("click", function(){
+      $("body").on("click", ".filelist .tab", function(){
 
         var file = $(this).attr("id").replace("file:","");
         createEditor(file, file);
         console.log("Hello World");
 
       });
-      $("#top-selector div").on("hover", function(){
+
+      $("body").on("mouseenter", "#top-selector div", function(){
 
         $(this).find("i").fadeIn(125);
 
 
 
-      },function(){
+      });
+      $("body").on("mouseleave", "#top-selector div", function(){
 
         $(this).find("i").fadeOut(125);
 
       });
 
-      $(".tab").on("hover",function(){
+      $("body").on("mouseenter", ".tab", function(){
         if(!$(this).hasClass("activeTab")){
           $(this).css("background",getLightOrDark($("."+theme).css("background-color"), 0.025));
         }
-      }, function(){
+      });
+      $("body").on("mouseleave", ".tab", function(){
 
         if(!$(this).hasClass("activeTab")){
           $(this).css("background","transparent");
@@ -309,7 +324,7 @@
 
       });
 
-      $(".tab").on("click", function(){
+      $("body").on("click", ".tab", function(){
 
         $(this).siblings().find("span").removeClass('active');
 
@@ -323,13 +338,11 @@
 
       });
 
-      $("#top-selector i").on("click",function(){
+      $("body").on("click", "#top-selector i", function(){
         $(this).parent().css("transition","none");
         $(this).parent().css("position","relative");
-        $(this).parent().animate({
-          "left":"-100%"
-        }, 75, function(){$(this).remove()});
-        removeEditor($(this).attr("id").replace("file:",""));
+        removeEditor($(this).parent().attr("id").replace("file:",""));
+        $(this).parent().remove();
 
       });
     function getLightOrDark(color, intensity){
